@@ -19,6 +19,7 @@ public class MTGJsonParser
 {
     String file = "/Users/Zac Murdaugh/Documents/NetBeansProjects/MTGData/src/assets/AllSets.json/";
     
+    //<editor-fold defaultstate="collapsed" desc="Creature Types">
     String[] creatureTypes = {
         "Advisor",
         "Aetherborn",
@@ -262,7 +263,25 @@ public class MTGJsonParser
         "Zombie",
         "Zubera"
     };
+//</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Artifact Types">
+    String[] artifactTypes = {
+        "Creature",
+        "Equipment",
+        "Contraption",
+        "Fortification",
+        "Clue"
+    };
+//</editor-fold>
+    
+    String[] enchantmentTypes = {
+        "Aura",
+        "Curse",
+        "Shrine"
+    };
+    
+    //<editor-fold defaultstate="collapsed" desc="Sets">
     String[] sets = {
         "10E",
         "LEA",
@@ -285,7 +304,9 @@ public class MTGJsonParser
         "ORI",
         "M19"
     };
+//</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Output Files">
     String[] outputFiles = {
         "/Users/Zac Murdaugh/Documents/CREATURES.json",
         "/Users/Zac Murdaugh/Documents/INSTANTS.json",
@@ -294,6 +315,9 @@ public class MTGJsonParser
         "/Users/Zac Murdaugh/Documents/ARTIFACTS.json",
         "/Users/Zac Murdaugh/Documents/LANDS.json",
     };
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Global Variables">
     JSONObject allData     = new JSONObject();
     
     JSONArray creatures    = new JSONArray();
@@ -312,6 +336,7 @@ public class MTGJsonParser
     
     int TotalCounter = 0;
     int currentSet = 0;
+//</editor-fold>
     
     MTGJsonParser()
     {
@@ -333,6 +358,7 @@ public class MTGJsonParser
             currentSet = i;
             System.out.println("\n" + sets[i]/* + ": "*/);
             currentSetJson = (JSONObject) jsonObject.get(sets[i]);
+            
             parseCreatures();
             parseArtifacts();
             parseInstants();
@@ -345,7 +371,9 @@ public class MTGJsonParser
         }
         
         parseAllCreatureTypes();
-        fillAllData();
+        parseAllArtifactTypes();
+        parseAllEnchantmentTypes();
+//        fillAllData();
     }
     
     private void parseCreatures()
@@ -395,6 +423,7 @@ public class MTGJsonParser
                 JSONObject keyValuePair = new JSONObject();
                 keyValuePair.put("name", name);
                 keyValuePair.put("set", currentSet);
+                keyValuePair.put("type", type);
                 instants.add(keyValuePair);
             }
         }
@@ -423,6 +452,7 @@ public class MTGJsonParser
                 JSONObject keyValuePair = new JSONObject();
                 keyValuePair.put("name", name);
                 keyValuePair.put("set", currentSet);
+                keyValuePair.put("type", type);
                 sorceries.add(keyValuePair);
             }
         }
@@ -451,6 +481,7 @@ public class MTGJsonParser
                 JSONObject keyValuePair = new JSONObject();
                 keyValuePair.put("name", name);
                 keyValuePair.put("set", currentSet);
+                keyValuePair.put("type", type);
                 artifacts.add(keyValuePair);
             }
         }
@@ -479,6 +510,7 @@ public class MTGJsonParser
                 JSONObject keyValuePair = new JSONObject();
                 keyValuePair.put("name", name);
                 keyValuePair.put("set", currentSet);
+                keyValuePair.put("type", type);
                 lands.add(keyValuePair);
             }
         }
@@ -507,6 +539,7 @@ public class MTGJsonParser
                 JSONObject keyValuePair = new JSONObject();
                 keyValuePair.put("name", name);
                 keyValuePair.put("set", currentSet);
+                keyValuePair.put("type", type);
                 enchantments.add(keyValuePair);
             }
         }
@@ -588,7 +621,37 @@ public class MTGJsonParser
         FileWriter fileWriter;
         
         try{
-            fileWriter = new FileWriter("/Users/Zac Murdaugh/Documents/" + creatureTypes[index]+".json");
+            fileWriter = new FileWriter("/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/" + creatureTypes[index]+".json");
+            
+            fileWriter.write(array.toJSONString());
+            fileWriter.flush();
+            fileWriter.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    private void exportArtifactTypeToJsonFile(JSONArray array, int index)
+    {
+        FileWriter fileWriter;
+        
+        try{
+            fileWriter = new FileWriter("/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/Artifact" + artifactTypes[index]+".json");
+            
+            fileWriter.write(array.toJSONString());
+            fileWriter.flush();
+            fileWriter.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    private void exportEnchantmentTypeToJsonFile(JSONArray array, int index)
+    {
+        FileWriter fileWriter;
+        
+        try{
+            fileWriter = new FileWriter("/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/" + enchantmentTypes[index]+".json");
             
             fileWriter.write(array.toJSONString());
             fileWriter.flush();
@@ -632,6 +695,56 @@ public class MTGJsonParser
                 }
             }
             exportCreatureTypeToJsonFile(tempArray, i);
+            tempArray = new JSONArray();
+        }
+    }
+    
+    public void parseAllArtifactTypes()
+    {
+        JSONArray tempArray = new JSONArray();
+        JSONObject current  = new JSONObject();
+        String type;
+        String name;
+        
+        for(int i = 0; i < artifactTypes.length; i++)
+        {
+            System.out.println("\n" + artifactTypes[i]);
+            for(int j = 0; j < artifacts.size(); j++)
+            {
+                current = (JSONObject) artifacts.get(j);
+                type = (String) current.get("type");
+                
+                if(type.contains(artifactTypes[i]))
+                {
+                    tempArray.add(current);
+                }
+            }
+            exportArtifactTypeToJsonFile(tempArray, i);
+            tempArray = new JSONArray();
+        }
+    }
+    
+    public void parseAllEnchantmentTypes()
+    {
+        JSONArray tempArray = new JSONArray();
+        JSONObject current  = new JSONObject();
+        String type;
+        String name;
+        
+        for(int i = 0; i < enchantmentTypes.length; i++)
+        {
+            System.out.println("\n" + enchantmentTypes[i]);
+            for(int j = 0; j < enchantments.size(); j++)
+            {
+                current = (JSONObject) enchantments.get(j);
+                type = (String) current.get("type");
+                
+                if(type.contains(enchantmentTypes[i]))
+                {
+                    tempArray.add(current);
+                }
+            }
+            exportEnchantmentTypeToJsonFile(tempArray, i);
             tempArray = new JSONArray();
         }
     }
