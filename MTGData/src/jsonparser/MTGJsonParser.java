@@ -275,11 +275,13 @@ public class MTGJsonParser
     };
 //</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Enchantment Types">
     String[] enchantmentTypes = {
         "Aura",
         "Curse",
         "Shrine"
     };
+//</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Sets">
     String[] sets = {
@@ -308,24 +310,26 @@ public class MTGJsonParser
     
     //<editor-fold defaultstate="collapsed" desc="Output Files">
     String[] outputFiles = {
-        "/Users/Zac Murdaugh/Documents/CREATURES.json",
-        "/Users/Zac Murdaugh/Documents/INSTANTS.json",
-        "/Users/Zac Murdaugh/Documents/SORCERIES.json",
-        "/Users/Zac Murdaugh/Documents/ENCHANTMENTS.json",
-        "/Users/Zac Murdaugh/Documents/ARTIFACTS.json",
-        "/Users/Zac Murdaugh/Documents/LANDS.json",
+        "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/CREATURES.json",
+        "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/INSTANTS.json",
+        "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/SORCERIES.json",
+        "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/ENCHANTMENTS.json",
+        "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/ARTIFACTS.json",
+        "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/LANDS.json",
+        "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/PLANESWALKERS.json"
     };
 //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Global Variables">
-    JSONObject allData     = new JSONObject();
+    JSONObject allData      = new JSONObject();
     
-    JSONArray creatures    = new JSONArray();
-    JSONArray instants     = new JSONArray();
-    JSONArray sorceries    = new JSONArray();
-    JSONArray lands        = new JSONArray();
-    JSONArray enchantments = new JSONArray();
-    JSONArray artifacts    = new JSONArray();
+    JSONArray creatures     = new JSONArray();
+    JSONArray instants      = new JSONArray();
+    JSONArray sorceries     = new JSONArray();
+    JSONArray lands         = new JSONArray();
+    JSONArray enchantments  = new JSONArray();
+    JSONArray artifacts     = new JSONArray();
+    JSONArray planeswalkers = new JSONArray();
     
     FileReader fileReader;
     
@@ -365,6 +369,7 @@ public class MTGJsonParser
             parseEnchantments();
             parseLands();
             parseSorceries();
+            parsePlaneswalkers();
             
             System.out.println("Total: " + TotalCounter);
             TotalCounter = 0;
@@ -550,6 +555,35 @@ public class MTGJsonParser
         //System.out.println(enchantments.toString());
     }
     
+    private void parsePlaneswalkers()
+    {
+        int planeswalkerCounter = 0;
+        jsonArray = (JSONArray) currentSetJson.get("cards");
+        
+        for(int i = 0; i < jsonArray.size(); i++)
+        {
+            JSONObject card = (JSONObject) jsonArray.get(i);
+
+            String type = (String) card.get("type");
+            String name = (String) card.get("name");
+            
+            if(type.contains("Planeswalker"))
+            {
+                planeswalkerCounter++;
+                JSONObject keyValuePair = new JSONObject();
+                keyValuePair.put("name", name);
+                keyValuePair.put("set", currentSet);
+                keyValuePair.put("type", type);
+                planeswalkers.add(keyValuePair);
+            }
+        }
+        
+        TotalCounter += planeswalkerCounter;
+        //System.out.println("\Planeswalkers: " + planeswalkerCounter);
+        //allData.put("planeswalkers", planeswalkers);
+        //System.out.println(planeswalkers.toString());
+    }
+    
     private void fillAllData()
     {
         allData.put("creatures", creatures);
@@ -603,6 +637,12 @@ public class MTGJsonParser
                         
                     case 5:
                         fileWriter.write(lands.toJSONString());
+                        fileWriter.flush();
+                        fileWriter.close();
+                        break;
+                        
+                    case 6:
+                        fileWriter.write(planeswalkers.toJSONString());
                         fileWriter.flush();
                         fileWriter.close();
                         break;
