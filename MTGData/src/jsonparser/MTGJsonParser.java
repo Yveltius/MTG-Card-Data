@@ -5,12 +5,8 @@
  */
 package jsonparser;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Set;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -21,7 +17,7 @@ import org.json.simple.parser.JSONParser;
  */
 public class MTGJsonParser
 {
-    String file = "./src/assets/AllSets.json/";
+    String file = "/Users/Zac Murdaugh/Documents/NetBeansProjects/MTGData/src/assets/AllSets.json/";
     
     //<editor-fold defaultstate="collapsed" desc="Creature Types">
     String[] creatureTypes = {
@@ -345,13 +341,13 @@ public class MTGJsonParser
     
     //<editor-fold defaultstate="collapsed" desc="Output Files">
     String[] outputFiles = {
-        "./src/assets/CreatedJson/CREATURES.json",
-        "./src/assets/CreatedJson/INSTANTS.json",
-        "./src/assets/CreatedJson/SORCERIES.json",
-        "./src/assets/CreatedJson/ENCHANTMENTS.json",
-        "./src/assets/CreatedJson/ARTIFACTS.json",
-        "./src/assets/CreatedJson/LANDS.json",
-        "./src/assets/CreatedJson/PLANESWALKERS.json"
+        "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/CREATURES.json",
+        "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/INSTANTS.json",
+        "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/SORCERIES.json",
+        "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/ENCHANTMENTS.json",
+        "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/ARTIFACTS.json",
+        "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/LANDS.json",
+        "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/PLANESWALKERS.json"
     };
 //</editor-fold>
     
@@ -383,36 +379,6 @@ public class MTGJsonParser
         jsonParser = new JSONParser();
     }
     
-    public void parseMTGsets()
-    {
-	   JSONObject json = null;
-	   try
-	   {
-		  fileReader = new FileReader(file);
-		  json = (JSONObject) jsonParser.parse(fileReader);
-	   }
-	   catch(Exception e)
-	   {
-		  e.printStackTrace();
-		  System.exit(1);
-	   }
-	   Set<JSONObject> topset = json.keySet();
-	   ArrayList<String> list = new ArrayList<String>();
-	  
-	   sets = topset.toString().split(",|\\[|\\]");
-	    for (String s : sets)
-	   {
-		  list.add(s);
-	   }
-	    //sets = (String[])
-	    list.toArray(sets);
-//	   for (int i = 0; i < sets.length ;i++)
-//	   {
-//		  sets[i] = sets[i].split("[")[0];
-//		  System.out.println(sets[i]);
-//		  sets[i] = sets[i].split("]")[0];
-//	   }
-    }
     public void parseMTGJson()
     {
         try{
@@ -425,16 +391,8 @@ public class MTGJsonParser
         for(int i = 0; i < sets.length; i++)
         {
             currentSet = i;
-		  if (sets[i].isEmpty())
-		  {
-			 continue;
-		  }
-            System.out.println("\n" + sets[i]/*+ ": "*/);
+            System.out.println("\n" + sets[i]/* + ": "*/);
             currentSetJson = (JSONObject) jsonObject.get(sets[i]);
-		  if (currentSetJson == null)
-		  {
-			 continue;
-		  }
             
             parseCreatures();
             parseArtifacts();
@@ -737,17 +695,12 @@ public class MTGJsonParser
         FileWriter fileWriter;
         
         try{
-            fileWriter = new FileWriter("./src/assets/CreatedJson/" + creatureTypes[index]+".json", true);
+            fileWriter = new FileWriter("/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/" + creatureTypes[index]+".json");
             
             fileWriter.write(array.toJSONString());
             fileWriter.flush();
             fileWriter.close();
-        }
-//	   catch(IOException ioe)
-//	   {
-//		  System.out.println("file specified is directory, ex msg.: " + ioe.getMessage());
-//	   }
-	   catch(Exception e){
+        }catch(Exception e){
             e.printStackTrace();
         }
     }
@@ -757,7 +710,7 @@ public class MTGJsonParser
         FileWriter fileWriter;
         
         try{
-            fileWriter = new FileWriter("./src/assets/CreatedJson/Artifact" + artifactTypes[index]+".json");
+            fileWriter = new FileWriter("/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/Artifact" + artifactTypes[index]+".json");
             
             fileWriter.write(array.toJSONString());
             fileWriter.flush();
@@ -772,7 +725,7 @@ public class MTGJsonParser
         FileWriter fileWriter;
         
         try{
-            fileWriter = new FileWriter("./src/assets/CreatedJson/" + enchantmentTypes[index]+".json");
+            fileWriter = new FileWriter("/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/" + enchantmentTypes[index]+".json");
             
             fileWriter.write(array.toJSONString());
             fileWriter.flush();

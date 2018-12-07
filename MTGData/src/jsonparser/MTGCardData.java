@@ -26,10 +26,8 @@ public class MTGCardData
         // TODO code application logic here
         MTGJsonParser parser = new MTGJsonParser();
         
-	   parser.parseMTGsets();
         parser.parseMTGJson();
         parser.exportMTGJsonToFile();
-	   
         //parser.readInJson(file);
     }
     
