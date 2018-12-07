@@ -283,6 +283,37 @@ public class MTGJsonParser
     };
 //</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Instant Types">
+    String[] instantTypes = {
+        "Arcane",
+        "Trap"
+    };
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Sorcery Types">
+    String[] sorceryTypes = {
+        "Arcane"
+    };
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Land Types">
+    String[] landTypes = {
+        "Plains",
+        "Island",
+        "Swamp",
+        "Mountain",
+        "Forest",
+        "Desert",
+        "Gate",
+        "Lair",
+        "Locus",
+        "Mine",
+        "Power-Plant",
+        "Tower",
+        "Urza's",
+    };
+//</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="Sets">
     String[] sets = {
         "10E",
@@ -378,6 +409,9 @@ public class MTGJsonParser
         parseAllCreatureTypes();
         parseAllArtifactTypes();
         parseAllEnchantmentTypes();
+        //parseAllInstantTypes();
+        //parseAllSorceryTypes();
+        //parseAllLandTypes();
 //        fillAllData();
     }
     
