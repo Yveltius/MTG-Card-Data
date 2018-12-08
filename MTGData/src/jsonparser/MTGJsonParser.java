@@ -7,6 +7,8 @@ package jsonparser;
 
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.Set;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,7 +19,7 @@ import org.json.simple.parser.JSONParser;
  */
 public class MTGJsonParser
 {
-    String file = "/Users/Zac Murdaugh/Documents/NetBeansProjects/MTGData/src/assets/AllSets.json/";
+    String file = "./src/assets/AllSets.json/";
     
     //<editor-fold defaultstate="collapsed" desc="Creature Types">
     String[] creatureTypes = {
@@ -316,26 +318,180 @@ public class MTGJsonParser
     
     //<editor-fold defaultstate="collapsed" desc="Sets">
     String[] sets = {
-        "10E",
         "LEA",
         "LEB",
         "2ED",
+        "ARN",
+        "ATQ",
         "3ED",
+        "LEG",
+        "DRK",
+        "FEM",
         "4ED",
+        "ICE",
+        "CHR",
+        "HML",
+        "ALL",
+        "MIR",
+        "VIS",
         "5ED",
+        "POR",
+        "WTH",
+        "TMP",
+        "STH",
+        "EXO",
+        "P02",
+        "UGL",
+        "USG",
+        "ATH",
+        "ULG",
         "6ED",
+        "UDS",
+        "PTK",
+        "S99",
+        "MMQ",
+        "BRB",
+        "NEM",
+        "S00",
+        "PCY",
+        "INV",
+        "BTD",
+        "PLS",
         "7ED",
+        "APC",
+        "ODY",
+        "DKM",
+        "TOR",
+        "JUD",
+        "ONS",
+        "LGN",
+        "SCG",
         "8ED",
+        "MRD",
+        "DST",
+        "5DN",
+        "CHK",
+        "UNH",
+        "BOK",
+        "SOK",
         "9ED",
+        "RAV",
+        "GPT",
+        "DIS",
+        "CSP",
+        "TSP",
+        "PLC",
+        "FUT",
         "10E",
+        "MED",
+        "LRW",
+        "EVG",
+        "MOR",
+        "SHM",
+        "EVE",
+        "DRB",
+        "ME2",
+        "ALA",
+        "CON",
+        "ARB",
         "M10",
+        "TD0",
+        "V09",
+        "HOP",
+        "ME3",
+        "ZEN",
+        "H09",
+        "WWK",
+        "ROE",
+        "DPA",
+        "ARC",
         "M11",
+        "V10",
+        "SOM",
+        "TD0",
+        "PD2",
+        "ME4",
+        "MBS",
+        "NPH",
+        "CMD",
         "M12",
+        "V11",
+        "ISD",
+        "PD3",
+        "DKA",
+        "AVR",
+        "PC2",
         "M13",
+        "V12",
+        "RTR",
+        "CM1",
+        "TD2",
+        "GTC",
+        "DGM",
+        "MMA",
         "M14",
+        "V13",
+        "THS",
+        "C13",
+        "BNG",
+        "JOU",
+        "MD1",
+        "CNS",
+        "VMA",
         "M15",
+        "V14",
+        "KTK",
+        "C14",
+        "FRF",
+        "DTK",
+        "TPR",
+        "MM2",
         "ORI",
-        "M19"
+        "V15",
+        "BFZ",
+        "EXP",
+        "C15",
+        "PZ1",
+        "OGW",
+        "W16",
+        "SOI",
+        "EMA",
+        "EMN",
+        "V16",
+        "CN2",
+        "KLD",
+        "MPS",
+        "PZ2",
+        "C16",
+        "PCA",
+        "AER",
+        "MM3",
+        "W17",
+        "AKH",
+        "MPS",
+        "CMA",
+        "E01",
+        "HOU",
+        "C17",
+        "XLN",
+        "IMA",
+        "E02",
+        "V17",
+        "UST",
+        "RIX",
+        "A25",
+        "DOM",
+        "CM2",
+        "BBD",
+        "SS1",
+        "GS1",
+        "M19",
+        "C18",
+        "MED",
+        "GRN",
+        "GK1",
+        "GNT",
+        "UMA",
     };
 //</editor-fold>
     
@@ -347,7 +503,8 @@ public class MTGJsonParser
         "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/ENCHANTMENTS.json",
         "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/ARTIFACTS.json",
         "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/LANDS.json",
-        "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/PLANESWALKERS.json"
+        "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/PLANESWALKERS.json",
+        "/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/ALLDATA.json"
     };
 //</editor-fold>
     
@@ -409,10 +566,10 @@ public class MTGJsonParser
         parseAllCreatureTypes();
         parseAllArtifactTypes();
         parseAllEnchantmentTypes();
-        //parseAllInstantTypes();
-        //parseAllSorceryTypes();
-        //parseAllLandTypes();
-//        fillAllData();
+        parseAllInstantTypes();
+        parseAllSorceryTypes();
+        parseAllLandTypes();
+        fillAllData();
     }
     
     private void parseCreatures()
@@ -681,6 +838,12 @@ public class MTGJsonParser
                         fileWriter.close();
                         break;
                         
+                    case 7: 
+                        fileWriter.write(allData.toJSONString());
+                        fileWriter.flush();
+                        fileWriter.close();
+                        break;
+                        
                     default:
                         break;
                 }
@@ -734,6 +897,51 @@ public class MTGJsonParser
             e.printStackTrace();
         }
     }
+    
+    private void exportInstantTypeToJsonFile(JSONArray array, int index)
+    {
+        FileWriter fileWriter;
+        
+        try{
+            fileWriter = new FileWriter("/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/" + instantTypes[index]+".json");
+            
+            fileWriter.write(array.toJSONString());
+            fileWriter.flush();
+            fileWriter.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    private void exportSorceryTypeToJsonFile(JSONArray array, int index)
+    {
+        FileWriter fileWriter;
+        
+        try{
+            fileWriter = new FileWriter("/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/" + sorceryTypes[index]+".json");
+            
+            fileWriter.write(array.toJSONString());
+            fileWriter.flush();
+            fileWriter.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    private void exportLandTypeToJsonFile(JSONArray array, int index)
+    {
+        FileWriter fileWriter;
+        
+        try{
+            fileWriter = new FileWriter("/Users/Zac Murdaugh/Documents/NetBeansProjects/CreatedJson/" + landTypes[index]+".json");
+            
+            fileWriter.write(array.toJSONString());
+            fileWriter.flush();
+            fileWriter.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
     void readInJson(String file)
     {
@@ -757,7 +965,7 @@ public class MTGJsonParser
         
         for(int i = 0; i < creatureTypes.length; i++)
         {
-            System.out.println("\n" + creatureTypes[i]);
+            System.out.println("\nCreature - " + creatureTypes[i]);
             for(int j = 0; j < creatures.size(); j++)
             {
                 current = (JSONObject) creatures.get(j);
@@ -782,7 +990,7 @@ public class MTGJsonParser
         
         for(int i = 0; i < artifactTypes.length; i++)
         {
-            System.out.println("\n" + artifactTypes[i]);
+            System.out.println("\nArtifact - " + artifactTypes[i]);
             for(int j = 0; j < artifacts.size(); j++)
             {
                 current = (JSONObject) artifacts.get(j);
@@ -807,7 +1015,7 @@ public class MTGJsonParser
         
         for(int i = 0; i < enchantmentTypes.length; i++)
         {
-            System.out.println("\n" + enchantmentTypes[i]);
+            System.out.println("\nEnchantment - " + enchantmentTypes[i]);
             for(int j = 0; j < enchantments.size(); j++)
             {
                 current = (JSONObject) enchantments.get(j);
@@ -819,6 +1027,81 @@ public class MTGJsonParser
                 }
             }
             exportEnchantmentTypeToJsonFile(tempArray, i);
+            tempArray = new JSONArray();
+        }
+    }
+    
+    public void parseAllInstantTypes()
+    {
+        JSONArray tempArray = new JSONArray();
+        JSONObject current  = new JSONObject();
+        String type;
+        String name;
+        
+        for(int i = 0; i < instantTypes.length; i++)
+        {
+            System.out.println("\nInstant - " + instantTypes[i]);
+            for(int j = 0; j < instants.size(); j++)
+            {
+                current = (JSONObject) instants.get(j);
+                type = (String) current.get("type");
+                
+                if(type.contains(instantTypes[i]))
+                {
+                    tempArray.add(current);
+                }
+            }
+            exportInstantTypeToJsonFile(tempArray, i);
+            tempArray = new JSONArray();
+        }
+    }
+    
+    public void parseAllSorceryTypes()
+    {
+        JSONArray tempArray = new JSONArray();
+        JSONObject current  = new JSONObject();
+        String type;
+        String name;
+        
+        for(int i = 0; i < sorceryTypes.length; i++)
+        {
+            System.out.println("\nSorcery - " + sorceryTypes[i]);
+            for(int j = 0; j < sorceries.size(); j++)
+            {
+                current = (JSONObject) sorceries.get(j);
+                type = (String) current.get("type");
+                
+                if(type.contains(sorceryTypes[i]))
+                {
+                    tempArray.add(current);
+                }
+            }
+            exportSorceryTypeToJsonFile(tempArray, i);
+            tempArray = new JSONArray();
+        }
+    }
+    
+    public void parseAllLandTypes()
+    {
+        JSONArray tempArray = new JSONArray();
+        JSONObject current  = new JSONObject();
+        String type;
+        String name;
+        
+        for(int i = 0; i < landTypes.length; i++)
+        {
+            System.out.println("\nLands - " + landTypes[i]);
+            for(int j = 0; j < lands.size(); j++)
+            {
+                current = (JSONObject) lands.get(j);
+                type = (String) current.get("type");
+                
+                if(type.contains(landTypes[i]))
+                {
+                    tempArray.add(current);
+                }
+            }
+            exportLandTypeToJsonFile(tempArray, i);
             tempArray = new JSONArray();
         }
     }
